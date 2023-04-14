@@ -1,0 +1,38 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  # Name of the application which will be used to refer to it once deployed.
+  name: drybeanpredictionapp
+spec:
+  # List of components that are part of the application.
+  components:
+      # Each component must have a name. The name will be used during the translation process
+      # to Kubernetes entities.
+    - name: frontend
+      # Each component is associated with a type. The type works as a template and defines
+      # how a high-level component will be translated into Kubernetes.
+      type: webservice
+      # Properties that can be configured for the user. This can be use to set the parameters
+      # that are defined by the component type.
+      properties:
+        image: gopalgupta123456789/dry_bean_prediction_app # (Required) Container image
+#          env: # (Optional) Definition of the environment variables for the container
+#              - name: ENV_VAR1 # Setting the value directly
+#                value: "value1"
+#          cmd: [ "server", "run" ] # (Optional) Commands to run in the container.
+#          cpu: "0.5" # (Optional) Define the requested CPU.
+#          memory: 256Mi # (Optional) Define the requested memory.
+          ports: # Optional definition of the ports that are exposed by the container
+            - port: 5000
+              expose: true # (Optional) Setting expose to true will generate a Service endpoint to
+#
+      # enable component-to-component communication.
+#        <parameter values>
+#      # Traits are extensions that augment the capabilities of a component. For example,
+#      # changing the replication, importing a config map, etc.
+      traits:
+      - type: napptive-ingress # Set to napptive-ingress
+        properties:
+          name: drybean-ingress # (Optional) endpoint name
+          port: 5000 # (Required) port  where the service is listening for incomming connections.
+          path: / #
